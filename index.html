@@ -12,11 +12,11 @@
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--ink);overflow:hidden;font-family:"Philosopher",Georgia,serif;-webkit-user-select:none;user-select:none}
 #app{position:fixed;inset:0;display:flex;flex-direction:column}
-.stage{position:relative;width:100%;aspect-ratio:4/5;max-height:62vh;margin:0 auto;flex:none;overflow:hidden;background:#000}
+.stage{position:relative;width:min(100%,calc(62vh * 0.8));aspect-ratio:4/5;margin:0 auto;flex:none;overflow:hidden;background:#000}
 .stage video,.stage img.still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .9s ease,filter 1.2s ease}
-.stage::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:28%;background:linear-gradient(to bottom,rgba(7,6,4,0),var(--bg));pointer-events:none}
+.stage::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:9%;background:linear-gradient(to bottom,rgba(7,6,4,0),var(--bg));pointer-events:none}
 .dots{position:absolute;top:calc(env(safe-area-inset-top) + 12px);left:0;right:0;text-align:center;letter-spacing:.5em;color:rgba(220,176,98,.75);font-size:11px;z-index:3}
-.panel{flex:1;overflow-y:auto;padding:4px 22px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column;gap:14px;transition:opacity .7s ease}
+.panel{flex:1;overflow-y:auto;width:100%;max-width:560px;margin:0 auto;padding:4px 22px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column;gap:14px;transition:opacity .7s ease}
 h1{font-family:"Cormorant SC",serif;font-weight:700;color:var(--gold2);font-size:30px;line-height:1.05;letter-spacing:.02em;text-shadow:0 0 24px rgba(220,176,98,.25)}
 .body p{font-size:17px;line-height:1.5;color:var(--ink);margin:0 0 .7em}
 .body p:last-child{margin-bottom:0}
@@ -76,11 +76,11 @@ const STEPS = [
 let step = 0, busy = false;
 
 function show(media, loop = true) {
-  still.src = "media/" + media + ".jpg";
+  still.src = "" + media + ".jpg";
   if (media === "gate") { vid.removeAttribute("src"); vid.load(); vid.style.opacity = 0; return; }
   vid.style.opacity = 0;
   vid.loop = loop;
-  vid.src = "media/" + media + ".mp4";
+  vid.src = "" + media + ".mp4";
   vid.oncanplay = () => { vid.style.opacity = 1; vid.play().catch(() => {}); };
 }
 function render() {
@@ -133,7 +133,7 @@ function sealed() {
   holdStart = 0; busy = true; haptic("heavy");
   hand.classList.add("hidden"); panel.style.opacity = 0;
   if (tg && tg.BackButton) tg.BackButton.hide();
-  vid.loop = false; vid.src = "media/open.mp4"; still.src = "media/open.jpg";
+  vid.loop = false; vid.src = "open.mp4"; still.src = "open.jpg";
   vid.oncanplay = () => { vid.style.opacity = 1; vid.play().catch(() => {}); };
   setTimeout(() => haptic("ok"), 3300);
   const finish = () => {
@@ -154,7 +154,7 @@ if (!key) {
   panel.innerHTML = `<div class="who">Стражник врат</div><h1>Врата закрыты</h1><div class="body"><p>Без зова их не открыть. Ступай с миром.</p></div>`;
 } else render();
 // Подгрузить ролики заранее, чтобы переходы шли без пауз.
-["vision-1","vision-2","vision-3","vision-4","hand","open"].forEach((m) => { const l = document.createElement("link"); l.rel = "prefetch"; l.href = "media/" + m + ".mp4"; document.head.appendChild(l); });
+["vision-1","vision-2","vision-3","vision-4","hand","open"].forEach((m) => { const l = document.createElement("link"); l.rel = "prefetch"; l.href = "" + m + ".mp4"; document.head.appendChild(l); });
 </script>
 </body>
 </html>
